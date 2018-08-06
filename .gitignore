@@ -1,0 +1,8 @@
+/app-recipes
+/heros
+/junipergreen
+/RxJS
+build/
+TypeScript/ExamplesLesson
+node_modules/
+package-lock.json
