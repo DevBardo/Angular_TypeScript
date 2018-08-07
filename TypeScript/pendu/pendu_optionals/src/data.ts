@@ -10,7 +10,9 @@ export const MockWords: Word[] = [
     { word: "hyppogriffes" },
 ];
 
-// si vous souhaitez faire un jeu avec un utilisateur, partie facultative
+/**
+ * Structure pour le joueur 
+ */
 export class User {
     name: string;
     score: number;

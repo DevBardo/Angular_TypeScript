@@ -4,8 +4,7 @@ import { Word } from "./data";
 export enum Status {
     Winner,
     Loser,
-    Progress,
-    Start
+    Progress
 }
 
 export class Game {
@@ -23,23 +22,17 @@ export class Game {
     }
 
     init(words: Array<Word>): void {
-        // choix aléatoire d'un mot
-        let randomIndex: number = Math.floor(Math.random() * words.length);
-        this._word = words[randomIndex].word;
-        // le jeu commence on le met à start 
-        this._status = Status.Progress;
-        this._attempts = 1;
-        this._hiddenWord = words[randomIndex].hide;
+       
+        // TODO initialiser le jeu
 
         this._message = `Voici un jeu de pendu vous devez deviner le mot caché en ${this._maxAttempts} coups au plus, vous pouvez
         uniquement proposer un mot, certaines lettres du mot à trouver sont affichées. Bonne chance ! mot : ${this.show()}`;
     }
 
-    // getter permettant d'afficher plus simplement le status et les messages : game.status ou game.message
+    // getter et setter accéder ou assigner des valeurs : game.status, game.mesage ou game.status = Status.Progress
     get status(): Status { return this._status; }
     set status(status: Status) { this._status = status; }
     get message(): string { return this._message; }
-    // gestion de l'utilisateur : setter et getter
     get attemtps(): number { return this._attempts; }
 
     /**
@@ -48,14 +41,15 @@ export class Game {
     * @param word 
     */
     isWord(word: string) {
-        return word.toLowerCase() === this._word;
+        // TODO
     }
+
 
     /**
      * show : méthode qui affiche le mot caché à deviner
      */
     show(): string {
-        return this._hiddenWord;
+        // TODO 
     }
 
     /**
@@ -65,32 +59,14 @@ export class Game {
      */
     run(choice: string): void {
 
-        if (this.isWord(choice)) {
-            this._status = Status.Winner as Status;
-        } else {
-            this._message = `Bien essayé, mais votre mot : ${choice} n'est pas le message caché...
-                Recommencez, ${this.show()}
-                `;
-        }
-
-
-        this._message += ` nombre de coup(s) restant : ${this._maxAttempts - this._attempts}`;
-        this._attempts++;
-
-        if (this._attempts > this._maxAttempts
-            && this.status !== Status.Winner)
-            this.status = Status.Loser;
+       // TODO
     }
 
     /**
      * final: affiche l'état du jeu à la fin
      */
-    final() {
-        if (this._status === Status.Winner)
-            return `Bravo vous avez trouvé le mot ${this._word} en ${this._attempts}`;
-
-        return `Désolé malgré les ${this._attempts - 1} coup(s) vous n'avez pas trouve le mot magique !
-            On vous le donne quand même c'était : ${this._word}`;
+    final() : string {
+       // TODO
     }
 
 }

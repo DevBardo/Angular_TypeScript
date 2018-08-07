@@ -9,39 +9,46 @@ import { Game, Status } from "../game";
 /**
  * Bootstrap
  */
-let event: EventEmitter = new EventEmitter(); // Nous permet d'interargir avec la console
-process.stdin.setEncoding('utf8'); // définit l'encodage des caractères dans le flux de la console
-// récupère le nom à émettre pour continuer à demander une nouvelle lettre
-let current: any; // on met cette variable any, mais dans le jeu elle vaut choice 
-let game = new Game(MockWords); // on passe les mots à l'objet Game pour initialiser le jeu
+let event: EventEmitter = new EventEmitter(); // Nous permet d'émettre des données.
+process.stdin.setEncoding('utf8'); // Définit l'encodage des caractères dans le flux de la console.
+
+let current: any; // variable pour l'émission 
+let game = new Game(MockWords); // Initialisation du jeu
 
 /**
- * Application : interaction avec la console 
+ * Application : interaction avec le joueur
  */
 
-// méthode permettant de préparer les données récupérées dans le flux du terminal
+// Tout ce qui est envoyé par la méthode stdout arrive ici
+// et est émis vers event.emit(current, ...)
 process.stdin.on('data', (data) => {
   event.emit(current, data.toString().trim());
 });
 
-// On repasse par connect systématiquement
-event.on('connect', (choice, question) => {
-  console.log(question);
+event.on('connect', (choice, message) => {
+  console.log(message);
   current = choice;
   process.stdout.write('> ');
 });
 
-// Les paramètres 2 et 3 sont récupérés par la méthode event.on('connect', ...)
+// les paramètres choice et game.message sont émis vers la méthode event.on('connect', ...)
 event.emit('connect', 'choice', game.message);
 
+/**
+ * On analyse les réponses du joueur
+ */
 event.on('choice', (choice) => {
-  // TODO
+  game.run(choice); // logique du jeu
+  if (game.status === Status.Progress)
+    event.emit('connect', 'choice', game.message); // envoyé à event.on('connect', ...)
+  else
+    event.emit('end');
 });
 
 /**
- * Une fois que l'on arrive ici on fait le bilan du jeu 
+ * Le jeu se termine on affiche le message game.final()
  */
 event.on('end', () => {
-  // TODO
+  console.log(game.final());
   process.stdin.pause();
 });
